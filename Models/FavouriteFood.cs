@@ -1,11 +1,12 @@
-﻿using SQLite;
+﻿using DBApp.Models;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace App1.Models
+namespace DBApp.Models
 {
-    class FavouriteFood
+    public class FavouriteFood
     {
         [PrimaryKey, AutoIncrement]
         public long id { get; set; }

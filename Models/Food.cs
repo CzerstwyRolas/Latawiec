@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace App1.Models
+namespace DBApp.Models
 {
     public enum FoodType
     {
         Vegetable, Fruit, Seafood, Meat
     }
-    class Food
+    public class Food
     {
         [PrimaryKey, AutoIncrement]
         long id { get; set; }

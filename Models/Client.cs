@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace App1.Models
+namespace DBApp.Models
 {
-    class Client
+    public class Client
     {
         [PrimaryKey, AutoIncrement]
         public long Id { get; set; }

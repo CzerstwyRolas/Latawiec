@@ -1,4 +1,4 @@
-using SQLite;
+﻿using SQLite;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -13,13 +13,36 @@ namespace DBApp.Services
 
         public DatabaseService()
         {
-            var dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "clients.db");
+            string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "DBApp.db3");
             _database = new SQLiteAsyncConnection(dbPath);
+
             _database.CreateTableAsync<Client>().Wait();
+            _database.CreateTableAsync<Food>().Wait();
+            _database.CreateTableAsync<FavouriteFood>().Wait();
         }
 
-        public Task<int> AddClientAsync(Client client) => _database.InsertAsync(client);
-        public Task<int> DeleteClientAsync(Client client) => _database.DeleteAsync(client);
-        public Task<List<Client>> GetClientsAsync() => _database.Table<Client>().ToListAsync();
+        public Task<List<Client>> GetClientsAsync()
+        {
+            return _database.Table<Client>().ToListAsync();
+        }
+
+        public Task<int> AddClientAsync(Client client)
+        {
+            return _database.InsertAsync(client);
+        }
+
+        public Task<int> AddFoodAsync(Food food)
+        {
+            return _database.InsertAsync(food);
+        }
+
+        public Task<int> AddFavouriteFoodAsync(FavouriteFood favouriteFood)
+        {
+            return _database.InsertAsync(favouriteFood);
+        }
+        public Task<int> DeleteClientAsync(Client client)
+        {
+            return _database.DeleteAsync(client);
+        }
     }
 }
