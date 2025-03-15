@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace DBApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ClientPage : ContentPage
+    public partial class MenuPage : TabbedPage
     {
-        public ClientPage()
+        public MenuPage()
         {
             InitializeComponent();
         }

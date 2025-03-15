@@ -4,17 +4,22 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace DBApp.Models
-{
+{   
     public enum FoodType
     {
         Vegetable, Fruit, Seafood, Meat
     }
+    [Table("Food")]
     public class Food
     {
-        [PrimaryKey, AutoIncrement]
-        long id { get; set; }
-        string name { get; set; }
-        int in_stock { get; set; }
-        FoodType type { get; set; }
+        [Column("id")]
+        [AutoIncrement, PrimaryKey]
+        public long Id { get; set; }
+        [Column("name")]
+        public string Name { get; set; }
+        [Column ("in_stock")]
+        public int InStock { get; set; }
+        [Column("type")]
+        public FoodType Type { get; set; }
     }
 }

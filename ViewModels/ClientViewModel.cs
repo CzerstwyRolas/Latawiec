@@ -1,31 +1,54 @@
 ﻿using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Windows.Input;
+using Xamarin.Forms;
 using DBApp.Models;
 using DBApp.Services;
-using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace DBApp.ViewModels
 {
-    public class ClientViewModel : BaseViewModel
+    public class ClientViewModel : INotifyPropertyChanged
     {
-        private readonly DatabaseService _databaseService;
         public ObservableCollection<Client> Clients { get; set; }
+        public ICommand AddClientCommand { get; set; }
 
-        public ICommand AddClientCommand { get; }
-
-        public ClientViewModel()
+        private string _clientName;
+        public string ClientName
         {
-            _databaseService = new DatabaseService();
+            get => _clientName;
+            set
+            {
+                _clientName = value;
+                OnPropertyChanged(nameof(ClientName));
+            }
+        }
+
+        private string _clientSurname;
+        public string ClientSurname
+        {
+            get => _clientSurname;
+            set
+            {
+                _clientSurname = value;
+                OnPropertyChanged(nameof(ClientSurname));
+            }
+        }
+
+        private readonly ClientService _clientService;
+
+        public ClientViewModel(string dbPath)
+        {
             Clients = new ObservableCollection<Client>();
             AddClientCommand = new Command(async () => await AddClient());
 
+            _clientService = new ClientService(dbPath);
             LoadClients();
         }
 
         private async void LoadClients()
         {
-            var clients = await _databaseService.GetClientsAsync();
+            var clients = await _clientService.GetClientsAsync();
             Clients.Clear();
             foreach (var client in clients)
             {
@@ -33,16 +56,27 @@ namespace DBApp.ViewModels
             }
         }
 
-        public async Task AddClient()
+        private async Task AddClient()
         {
-            var newClient = new Client { Name = "", Surname = "" };
-            await _databaseService.AddClientAsync(newClient);
-            Clients.Add(newClient);
+            if (!string.IsNullOrWhiteSpace(ClientName) && !string.IsNullOrWhiteSpace(ClientSurname))
+            {
+                var newClient = new Client { name = ClientName, surname = ClientSurname };
+                await _clientService.SaveClientAsync(newClient);
+                Clients.Add(newClient);
+                ClientName = string.Empty; // Reset input
+                ClientSurname = string.Empty; // Reset input
+            }
+            else
+            {
+                // Optionally, show an alert if the input is invalid
+                await Application.Current.MainPage.DisplayAlert("Error", "Please enter both name and surname.", "OK");
+            }
         }
-        public async Task DeleteClient()
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string propertyName)
         {
-            var newClient = new Client { Name = "", Surname = "" };
-            await _databaseService.DeleteClientAsync(newClient);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

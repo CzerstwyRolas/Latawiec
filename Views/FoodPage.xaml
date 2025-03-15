@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DBApp.Views.FoodPage"
+             Title="Food Management">
+
+    <StackLayout Padding="10">
+        <Label Text="Food Name" FontSize="Medium" />
+        <Entry Text="{Binding FoodName}" Placeholder="Enter food name" />
+
+        <Label Text="In Stock" FontSize="Medium" />
+        <Entry Text="{Binding InStock}" Placeholder="Enter quantity" Keyboard="Numeric" />
+
+        <Label Text="Food Type" FontSize="Medium" />
+        <Picker ItemsSource="{Binding FoodTypes}" 
+                SelectedItem="{Binding FoodType}" 
+                Title="Select Food Type" />
+
+        <Button Text="Add Food" 
+                Command="{Binding AddFoodCommand}" 
+                BackgroundColor="LightGreen" 
+                TextColor="White" />
+
+        <Label Text="Food List" FontSize="Medium" Margin="0,20,0,0" />
+        <ListView ItemsSource="{Binding Foods}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Padding="10">
+                            <Label Text="{Binding Name}" FontSize="Medium" />
+                            <Label Text="{Binding InStock}" FontSize="Small" />
+                            <Label Text="{Binding Type}" FontSize="Small" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+</ContentPage>

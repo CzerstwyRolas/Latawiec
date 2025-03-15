@@ -5,11 +5,15 @@ using System.Text;
 
 namespace DBApp.Models
 {
+    [Table("Client")]
     public class Client
     {
+        [Column("id")]
         [PrimaryKey, AutoIncrement]
-        public long Id { get; set; }
-        public string Name { get; set; }
-        public string Surname { get; set; }
+        private long id { set; get; }
+        [Column("name")]
+        public string name { set; get; }
+        [Column("surname")]
+        public string surname { set; get; }
     }
 }
